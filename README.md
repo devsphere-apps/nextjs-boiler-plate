@@ -91,6 +91,81 @@ To learn more about the technologies used in this boilerplate:
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 
+## Testing
+
+This boilerplate includes both unit testing with Jest and end-to-end testing with Playwright using a BDD approach.
+
+### Unit Testing
+
+Unit tests are written using Jest and React Testing Library:
+
+```bash
+# Run all unit tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Generate test coverage report
+npm run test:coverage
+```
+
+### End-to-End Testing with BDD Approach
+
+This boilerplate implements end-to-end testing using Playwright with a Behavior-Driven Development (BDD) approach. The implementation is straightforward and maintainable:
+
+1. **Feature files**: Human-readable `.feature` files written in Gherkin syntax that describe application behavior
+2. **Step definitions**: Organized step implementations that map directly to Gherkin steps, implemented with Playwright
+
+To run the end-to-end tests:
+
+```bash
+# Run all E2E tests headlessly
+npm run test:e2e
+
+# Run tests with UI for debugging
+npm run test:e2e:ui
+```
+
+#### BDD Testing Structure
+
+Our BDD implementation follows this pattern:
+
+1. **Feature files** (`src/tests/e2e/features/`) describe the expected behaviors
+2. **Step definition files** (`src/tests/e2e/step-definitions/`) implement the steps
+
+This approach maintains the readability and structure of BDD testing while avoiding the complexity of integrating Cucumber directly with Playwright.
+
+#### Example Feature (in Gherkin syntax):
+
+```gherkin
+Feature: Counter Functionality
+  As a user
+  I want to use the counter functionality
+  So that I can increment and decrement a counter value
+
+  Scenario: Increment the counter
+    Given I am on the home page
+    When I click the "Increment" button
+    Then the counter value should be "1"
+```
+
+#### Corresponding Test Implementation:
+
+```typescript
+test('Scenario: Increment the counter', async ({ page }) => {
+  // Given I am on the home page (handled by beforeEach)
+  
+  // When I click the "Increment" button
+  await CounterSteps.whenIClickTheButton(page, 'Increment');
+  
+  // Then the counter value should be "1"
+  await CounterSteps.thenTheCounterValueShouldBe(page, '1');
+});
+```
+
+This approach makes tests readable, maintainable, and aligned with business requirements.
+
 ## License
 
 MIT
